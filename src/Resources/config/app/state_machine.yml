@@ -1,0 +1,38 @@
+winzou_state_machine:
+    paradise_security_sapient:
+        class: ParadiseSecurity\Bundle\SapientBundle\Model\Payload
+        property_path: state
+        graph: paradise_security_sapient
+        state_machine_class: ParadiseSecurity\Bundle\StateMachineBundle\StateMachine\StateMachine
+        states:
+            waiting: ~
+            new: ~
+            signed: ~
+            sealed: ~
+            unsealed: ~
+            verified: ~
+            unauthorized: ~
+            authorized: ~
+            failed: ~
+        transitions:
+            create:
+                from: [waiting]
+                to: new
+            sign:
+                from: [new]
+                to: signed
+            seal:
+                from: [new, signed]
+                to: sealed
+            verify:
+                from: [signed, sealed, unsealed]
+                to: verified
+            unseal:
+                from: [sealed]
+                to: unsealed
+            fail:
+                from: [new, signed, sealed, verified, unsealed]
+                to: failed
+            unauthorize:
+                from: [new, signed, sealed, verified, unsealed]
+                to: unauthorized

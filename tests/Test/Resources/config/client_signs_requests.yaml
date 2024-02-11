@@ -1,0 +1,20 @@
+paradise_security_sapient:
+    connections:
+        api_test_client:
+            enabled: true
+            identifier: 'unique-client-key'
+            host: 'https://localhost/'
+            security:
+                sign: true
+                seal: false
+                unseal: false
+                verify: false
+            keys:
+                sign:
+                    private: 'giP81DlS_R3JL4-UnSVbn2I5lm9abv8vA7aLuEdOUB4bfOjlm5vaj57Kn6DcZhv0lcTN20iqYV0M69Tk9XqEGQ=='
+            connectable_whitelist:
+                api_testing_endpoint:
+                    api_endpoint: true
+                    endpoints: ['/api/test']
+                    identifier: 'unique-server-key'
+                    host: 'https://localhost/'

@@ -1,0 +1,7 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+    ParadiseSecurity\Bundle\SapientBundle\Command\:
+        resource: "../../Command/*"

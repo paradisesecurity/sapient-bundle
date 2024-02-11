@@ -1,0 +1,36 @@
+#!/usr/bin/env php
+<?php
+
+$autoload = [
+    \dirname(__DIR__, 3).'/autoload.php',
+    \dirname(__DIR__, 2).'/vendor/autoload.php',
+    \dirname(__DIR__, 1).'/vendor/autoload.php',
+];
+
+$root = [
+    \dirname(__DIR__, 4),
+    \dirname(__DIR__, 2),
+    \dirname(__DIR__, 1),
+];
+
+foreach ($autoload as $index => $file) {
+    if (\file_exists($file)) {
+        require_once $file;
+        if (!\defined('SAPIENT_ROOT')) {
+            define(
+                'SAPIENT_ROOT',
+                $root[$index],
+            );
+        }
+        break;
+    }
+}
+
+use ParadiseSecurity\Bundle\SapientBundle\Command\GenerateConfigurationCommand;
+use Symfony\Component\Console\Application;
+
+$application = new Application();
+
+$application->add(new GenerateConfigurationCommand());
+
+$application->run();

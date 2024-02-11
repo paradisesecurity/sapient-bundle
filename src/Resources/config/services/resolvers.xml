@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <defaults public="true" />
+
+        <service id="paradise_security.sapient.resolver.default" class="ParadiseSecurity\Bundle\SapientBundle\Resolver\DefaultResolverServiceRegistry" />
+        <service id="ParadiseSecurity\Bundle\SapientBundle\Resolver\DefaultResolverServiceRegistryInterface" alias="paradise_security.sapient.resolver.default" />
+
+        <service id="paradise_security.sapient.resolver.service_registry" class="ParadiseSecurity\Component\ServiceRegistry\Registry\ServiceRegistry">
+            <factory service="paradise_security.sapient.resolver.default" />
+        </service>
+        <service id="ParadiseSecurity\Component\ServiceRegistry\Registry\ServiceRegistryInterface" alias="paradise_security.sapient.resolver.service_registry" />
+
+        <service id="paradise_security.sapient.resolver.delegating" class="ParadiseSecurity\Bundle\SapientBundle\Resolver\DelegatingResolver">
+            <argument type="service" id="paradise_security.sapient.resolver.service_registry" />
+        </service>
+        <service id="ParadiseSecurity\Bundle\SapientBundle\Resolver\DelegatingResolverInterface" alias="paradise_security.sapient.resolver.delegating" />
+
+        <service id="paradise_security.sapient.resolver.header" class="ParadiseSecurity\Bundle\SapientBundle\Resolver\HeaderResolver" />
+        <service id="ParadiseSecurity\Bundle\SapientBundle\Resolver\ResolverInterface" alias="paradise_security.sapient.resolver.header" />
+        <service id="paradise_security.sapient.resolver.path" class="ParadiseSecurity\Bundle\SapientBundle\Resolver\PathResolver" />
+        <service id="ParadiseSecurity\Bundle\SapientBundle\Resolver\ResolverInterface" alias="paradise_security.sapient.resolver.path" />
+        <service id="paradise_security.sapient.resolver.host" class="ParadiseSecurity\Bundle\SapientBundle\Resolver\HostResolver" />
+        <service id="ParadiseSecurity\Bundle\SapientBundle\Resolver\ResolverInterface" alias="paradise_security.sapient.resolver.host" />
+    </services>
+</container>

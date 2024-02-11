@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <imports>
+        <import resource="services/*.xml" />
+    </imports>
+
+    <services>
+        <defaults public="true" />
+
+        <service id="paradise_security.model.payload" class="ParadiseSecurity\Bundle\SapientBundle\Model\Payload" />
+        <service id="paradise_security.state_resolver.sapient" class="ParadiseSecurity\Bundle\SapientBundle\StateResolver\StateResolver">
+            <argument type="service" id="paradise_security.state_machine" />
+        </service>
+
+        <service id="paradise_security.sapient" class="ParagonIE\Sapient\Sapient" />
+        <service id="paradise_security.http_factory.guzzle" class="GuzzleHttp\Psr7\HttpFactory" />
+        <service id="paradise_security.http_factory.symfony" class="Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory" />
+
+        <service id="paradise_security.sapient.checker.bad_state" class="ParadiseSecurity\Bundle\SapientBundle\Checker\BadStateChecker">
+            <argument type="service" id="paradise_security.sapient.helper.http" />
+        </service>
+        <service id="ParadiseSecurity\Bundle\SapientBundle\Checker\BadStateCheckerInterface" alias="paradise_security.sapient.checker.bad_state" />
+
+        <service id="paradise_security.sapient.helper.http" class="ParadiseSecurity\Bundle\SapientBundle\Helper\HttpHelper">
+            <argument type="service" id="paradise_security.http_factory.psr.symfony" />
+            <argument type="service" id="paradise_security.http_factory.symfony" />
+            <argument type="service" id="paradise_security.sapient.resolver.delegating" />
+        </service>
+        <service id="ParadiseSecurity\Bundle\SapientBundle\Helper\HttpHelperInterface" alias="paradise_security.sapient.helper.http" />
+
+        <service id="paradise_security.sapient.provider.client_name" class="ParadiseSecurity\Bundle\SapientBundle\Provider\ClientNameProvider" />
+        <service id="ParadiseSecurity\Bundle\SapientBundle\Provider\ClientNameProviderInterface" alias="paradise_security.sapient.provider.client_name" />
+
+        <service id="paradise_security.sapient.handler.state" class="ParadiseSecurity\Bundle\SapientBundle\Handler\StateHandler">
+            <argument type="service" id="paradise_security.sapient.factory.payload" />
+            <argument type="service" id="paradise_security.state_resolver.sapient" />
+            <argument type="service" id="paradise_security.sapient.helper.http" />
+        </service>            
+        <service id="ParadiseSecurity\Bundle\SapientBundle\Handler\StateHandlerInterface" alias="paradise_security.sapient.handler.state" />
+
+        <service id="paradise_security.sapient.factory.payload" class="ParadiseSecurity\Bundle\SapientBundle\Factory\PayloadFactory" />
+        <service id="ParadiseSecurity\Bundle\SapientBundle\Factory\PayloadFactoryInterface" alias="paradise_security.sapient.factory.payload" />
+
+        <service id="paradise_security.http_factory.psr.symfony" class="Symfony\Bridge\PsrHttpMessage\Factory\PsrHttpFactory">
+            <argument type="service" id="paradise_security.http_factory.guzzle" />
+            <argument type="service" id="paradise_security.http_factory.guzzle" />
+            <argument type="service" id="paradise_security.http_factory.guzzle" />
+            <argument type="service" id="paradise_security.http_factory.guzzle" />
+        </service>
+
+        <service id="paradise_security.subscriber.sapient_exception" class="ParadiseSecurity\Bundle\SapientBundle\EventSubscriber\ExceptionSubscriber">
+            <tag name="kernel.event_subscriber" />
+        </service>
+    </services>
+</container>
